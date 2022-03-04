@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-10 col-md-10 col-lg-10 col-xl-8" style="margin-top:100px; background-color: rgba(255, 255, 255, 0.822);">
+                <br><br>
+                <div class="jumbotrn">
+                <h1 style="font-weight: bold; font-size:500%" class="blue">Iris medicine</h1>
+                <h3 style="font-weight: bold; font-size:160%" >Register with us now for an appointment!</h3>
+                <h5 style="font-weight: bold; font-size: 100%; overflow-wrap:break-word; width:auto">
+                    Iris Med, a modern hospital that aims to do things better.
+                </h5>
+                <div style="display:inline; margin-right: 10px; justify-content:space-around">
+                    <a href="#">About Us</a> 
+                    <a href="#">Register</a> 
+                </div>
+                
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+<script>
+
+  var slideIndex = 1;
+  showDivs(slideIndex);
+
+  var slide_rate = 10 * 1000; //2 seconds
+  setTimeout(Slide, slide_rate);
+
+  function showDivs(n) {
+    var bodyImage = document.body.style.background;
+    var bodyImageSize = document.body.style.backgroundSize;
+    var images = [
+        '/Images/1.jpg',
+        '/Images/2.jpg',
+        '/Images/3.jpg',
+        '/Images/4.jpg',
+        '/Images/5.jpg'
+    ]
+    var i;
+    if (n > images.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = images.length} ;
+    document.body.style.background = `url(${images[slideIndex-1]}) no-repeat center center fixed`;
+    document.body.style.backgroundSize = "cover";
+  }
+  </script>

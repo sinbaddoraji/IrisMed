@@ -1,0 +1,20 @@
+﻿@page
+@model IrisMed.Views.Misc.AppointmentsModel
+@{
+}
+
+@using Microsoft.AspNetCore.Identity
+@using IrisMed.Areas.Identity.Data;
+@inject SignInManager<IrisUser> SignInManager
+@inject UserManager<IrisUser> UserManager
+
+<div>
+@if (SignInManager.IsSignedIn(User))
+{
+     <p>Appointments</p>
+}
+else
+{
+    <p>You need to sign in to make appointments</p>
+}
+</div>
