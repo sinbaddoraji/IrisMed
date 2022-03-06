@@ -56,9 +56,26 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Phone]
-            [Display(Name = "Phone number")]
-            public string PhoneNumber { get; set; }
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
+
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
+
+            [Display(Name = "DateOfBirth")]
+            [DataType(DataType.Date)]
+            public string DateOfBirth { get; set; }
+
+            [Display(Name = "Ethniticy")]
+            public string Ethniticy { get; set; }
+
+            [Display(Name = "Height")]
+            [DataType(DataType.Text)]
+            public string Height { get; set; }
+
+            [Display(Name = "Weight")]
+            [DataType(DataType.Text)]
+            public string Weight { get; set; }
         }
 
         private async Task LoadAsync(IrisUser user)
@@ -70,7 +87,12 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                FullName = user.FullName,
+                Gender = user.Gender,
+                DateOfBirth = user.DateOfBirth,
+                Ethniticy = user.Ethniticy,
+                Height = user.Height,
+                Weight = user.Weight
             };
         }
 
@@ -100,16 +122,14 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
-            {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
-                {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
-                    return RedirectToPage();
-                }
-            }
+            user.FullName = Input.FullName;
+            user.Gender = Input.Gender;
+            user.DateOfBirth = Input.DateOfBirth;
+            user.Ethniticy = Input.Ethniticy;
+            user.Height = Input.Height;
+            user.Weight = Input.Weight;
+
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

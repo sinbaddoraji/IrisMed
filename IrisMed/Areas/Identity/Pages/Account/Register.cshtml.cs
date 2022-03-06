@@ -102,6 +102,18 @@ namespace IrisMed.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
+
+            [Display(Name = "Height")]
+            [DataType(DataType.Text)]
+            public string Height { get; set; }
+
+            [Display(Name = "Weight")]
+            [DataType(DataType.Text)]
+            public string Weight { get; set; }
         }
 
 
@@ -121,7 +133,10 @@ namespace IrisMed.Areas.Identity.Pages.Account
                 {
                     FullName = Input.FullName,
                     Email = Input.Email,
-                    DateOfBirth = Input.Dob
+                    DateOfBirth = Input.Dob,
+                    Weight = Input.Weight,
+                    Gender = Input.Gender,
+                    Height = Input.Height,
                 };
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
