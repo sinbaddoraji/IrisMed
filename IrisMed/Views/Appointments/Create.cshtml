@@ -15,6 +15,45 @@
 }
 else
 {
-    <p>You need to sign in to make appointments</p>
+   
+    <div class="container">
+        <div class="row">
+            <div class="col"></div>
+
+            <div class="col-10 col-md-10 col-lg-10 col-xl-8" style="margin-top:100px; background-color: rgba(255, 255, 255, 0.822);">
+                <br><br>
+                <div class="jumbotrn">
+                
+                
+                <center>
+                    <h3 style="font-weight: bold; font-size:160%" >Login to book an appointment!</h3>
+                    <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                    <p>Don't have an account?  <a asp-area="Identity" asp-page="/Account/Register">Register</a></p>
+                    
+                </center>
+                
+                </div>
+            </div>
+
+            <div class="col"></div>
+        </div>
+</div>
 }
 </div>
+
+<script>
+
+      var slideIndex = 1;
+      showDivs(slideIndex);
+
+      function showDivs(n) {
+        var bodyImage = document.body.style.background;
+        var bodyImageSize = document.body.style.backgroundSize;
+        var images = [
+            '/Images/7.jpg'
+        ]
+        document.body.style.background = `url(${images[0]}) no-repeat center center fixed`;
+        document.body.style.backgroundSize = "cover";
+      }
+
+  </script>
