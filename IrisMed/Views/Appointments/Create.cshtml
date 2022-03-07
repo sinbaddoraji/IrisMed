@@ -20,15 +20,15 @@ else
         <div class="row">
             <div class="col"></div>
 
-            <div class="col-10 col-md-10 col-lg-10 col-xl-8" style="margin-top:100px; background-color: rgba(255, 255, 255, 0.822);">
+            <div class="col-10 col-md-10 col-lg-10 col-xl-8" style="margin-top:100px; background-color: rgba(13, 13, 13, 0.6);">
                 <br><br>
                 <div class="jumbotrn">
                 
                 
                 <center>
-                    <h3 style="font-weight: bold; font-size:160%" >Login to book an appointment!</h3>
+                    <h3 style="font-weight: bold; font-size:160%; color: white" >Login to book an appointment!</h3>
                     <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                    <p>Don't have an account?  <a asp-area="Identity" asp-page="/Account/Register">Register</a></p>
+                    <p style="color: white">Don't have an account?  <a asp-area="Identity" asp-page="/Account/Register">Register</a></p>
                     
                 </center>
                 
@@ -41,19 +41,14 @@ else
 }
 </div>
 
-<script>
 
-      var slideIndex = 1;
-      showDivs(slideIndex);
-
-      function showDivs(n) {
-        var bodyImage = document.body.style.background;
-        var bodyImageSize = document.body.style.backgroundSize;
-        var images = [
-            '/Images/7.jpg'
-        ]
-        document.body.style.background = `url(${images[0]}) no-repeat center center fixed`;
-        document.body.style.backgroundSize = "cover";
-      }
-
-  </script>
+<style>
+    body {
+      background-image: url("/Images/7.jpg");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+}
+</style>

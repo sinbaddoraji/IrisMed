@@ -4,49 +4,57 @@
 @{
 }
 
-<div class="container">
-    <label for="fname">Fullname</label>
-    <input type="text" id="fname" name="firstname" placeholder="Your name..">
+@model ContactUsModel
+@{
+}
 
-    <label for="lname">Email Address</label>
-    <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+<form id="contactUsForm" asp-route-returnUrl="" method="post">
 
+    <div style="margin-left:25%; width:50%">
+            <div class="form-floating">
+                <input asp-for="Input.Name" class="form-control" autocomplete="fullname" aria-required="true" />
+                <label asp-for="Input.Name"></label>
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input asp-for="Input.Email" class="form-control" autocomplete="Email" aria-required="true" />
 
-    <label for="subject">Subject</label>
-    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+                <label asp-for="Input.Email"></label>
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-floating">
+                <input asp-for="Input.Content" class="form-control" autocomplete="Content" aria-required="true" type="text"/>
+                <label asp-for="Input.Content"></label>
+                <span asp-validation-for="Input.Content" class="text-danger"></span>
+            </div>
+            <br />
+            <div align="center">
+                <button id="aboutUsSubmit" type="submit" class="w-20 btn btn-lg btn-primary">Register</button>
+            </div>
+            
+    </div>
+            
+</form>
 
-    <input type="submit" value="Submit">
-</div>
 
 <style>
 
-input[type=text], select, textarea {
-  width: 100%; 
-  padding: 12px;
-  border: 1px solid #ccc; 
-  border-radius: 4px; 
-  box-sizing: border-box; 
-  margin-top: 6px; 
-  margin-bottom: 16px; 
-  resize: vertical 
+
+body {
+      background-image: url("/Images/7.jpg");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
 }
 
-input[type=submit] {
-  background-color: #04AA6D;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.contact
+{
+   margin: 25px 50px 75px 100px;
 }
 
-input[type=submit]:hover {
-  background-color: #45a049;
-}
-
-.container {
-  border-radius: 5px;
-  background-color: #f2f2f2;
-  padding: 20px;
-}
 </style>
+

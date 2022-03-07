@@ -11,14 +11,14 @@
   <p>We promise to offer you the health services you need without adding to your burdens</p>
 </div>
 
-<h2 style="text-align:center">Our Team</h2>
-<div class="row">
+<h2 style="text-align:center; color: white;">Our Team</h2>
+<div style="margin-left: 6%">
   <div class="column">
     <div class="card">
       <img src="/Images/3.jpg" alt="Jane" style="width:100%">
       <div class="container">
-        <h2>Dr Mary Obi</h2>
-        <p class="title">Head Medical Consultant</p>
+        <h2 style="color: white;">Dr Mary Obi</h2>
+        <p class="title">Consultant</p>
       </div>
     </div>
   </div>
@@ -27,8 +27,8 @@
     <div class="card">
       <img src="/Images/4.jpg" alt="Mike" style="width:100%">
       <div class="container">
-        <h2>Dr Fredrick Olu</h2>
-        <p class="title">Senior Doctor</p>
+        <h2 style="color: white;">Dr Fred Olu</h2>
+        <p class="title">Doctor</p>
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
     <div class="card">
       <img src="/Images/2.jpg" alt="John" style="width:100%">
       <div class="container">
-        <h2>Miss Nebi James</h2>
+        <h2 style="color: white;">Miss Nebi Jain</h2>
         <p class="title">Consultant</p>
       </div>
     </div>
@@ -52,7 +52,15 @@
     body {
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+
+   background-image: url("/Images/1.jpg");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
 }
+
 
 html {
   box-sizing: border-box;
@@ -64,35 +72,41 @@ html {
 
 .column {
   float: left;
-  width: 33.3%;
+  width: 31%;
+  height: 90%;
+  
   margin-bottom: 16px;
   padding: 0 8px;
 }
 
 .card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px 0 rgba(13, 13, 13, 0.222);
   margin: 8px;
+  background-color:  rgba(13, 13, 13, 0.522);
+  height: 90%;
 }
 
 .about-section {
   padding: 50px;
   text-align: center;
-  background-color: #474e5d;
+  background-color:  rgba(13, 13, 13, 0.822);
   color: white;
 }
 
 .container {
   padding: 0 16px;
+  
 }
 
 .container::after, .row::after {
   content: "";
   clear: both;
   display: table;
+  background-color:  rgba(13, 13, 13, 0.622);
 }
 
 .title {
-  color: grey;
+  color: white;
 }
 
 .button {
