@@ -1,4 +1,6 @@
 ﻿using IrisMed.Areas.Identity.Data;
+using IrisMed.Models;
+using IrisMed.Views.Home;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,6 +19,9 @@ namespace IrisMed.Data
 
             modelBuilder.Entity<IrisUser>()
             .ToTable("IrisUser");
+
+            modelBuilder.Entity<PatientQueries>()
+            .ToTable("Queries");
 
         }
 
