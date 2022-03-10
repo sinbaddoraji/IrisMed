@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IrisMed.Models
+namespace IrisMed.Data
 {
     public class PatientQueries
     {

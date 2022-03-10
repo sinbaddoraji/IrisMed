@@ -1,6 +1,5 @@
 ﻿using IrisMed.Areas.Identity.Data;
 using IrisMed.Models;
-using IrisMed.Views.Home;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

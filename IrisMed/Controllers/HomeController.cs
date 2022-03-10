@@ -1,4 +1,5 @@
-﻿using IrisMed.Models;
+﻿using IrisMed.Data;
+using IrisMed.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
