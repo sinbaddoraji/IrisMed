@@ -2,6 +2,7 @@
 using IrisMed.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace IrisMed.Controllers
 {
@@ -19,7 +20,18 @@ namespace IrisMed.Controllers
         // GET: QueriesController
         public ActionResult Index()
         {
-            return View(_context.Queries.ToList());
+            return View(_context.Queries.Select(x => ToModel(x)).ToList());
+        }
+
+        private static ContactUsModel ToModel(PatientQueries patientQueries)
+        {
+            return new ContactUsModel()
+            {
+                Id = patientQueries.Id,
+                Name = patientQueries.Name,
+                Content = patientQueries.Content,
+                Email = patientQueries.Email
+            };    
         }
 
         // GET: QueriesController/Details/5
@@ -46,6 +58,8 @@ namespace IrisMed.Controllers
                     _context.Add(collection);
                     _context.SaveChanges();
                     _context.Queries.Add(collection);
+
+                    return RedirectToAction(nameof(Index));
                 }
 
                 return View();
@@ -56,28 +70,6 @@ namespace IrisMed.Controllers
             }
         }
 
-        // GET: QueriesController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: QueriesController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: QueriesController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
@@ -90,11 +82,23 @@ namespace IrisMed.Controllers
         {
             try
             {
+                if (ModelState.IsValid)
+                {
+                    var query = _context.Queries.Where(x => x.Id == id).First();
+                    if(query != null)
+                    {
+                        _context.Queries.Remove(query);
+                        _context.Remove(query);
+                        _context.SaveChanges();
+                    }
+                }
+                    
+
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Index));
             }
         }
     }

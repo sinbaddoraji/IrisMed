@@ -20,7 +20,7 @@ namespace IrisMed.Data
             .ToTable("IrisUser");
 
             modelBuilder.Entity<PatientQueries>()
-            .ToTable("Queries");
+            .ToTable("Queries").HasKey("Id");
 
         }
 

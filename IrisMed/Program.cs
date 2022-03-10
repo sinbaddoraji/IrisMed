@@ -43,6 +43,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapDefaultControllerRoute();
 
 app.MapControllerRoute(
     name: "default",

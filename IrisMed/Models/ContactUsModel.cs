@@ -13,12 +13,15 @@ namespace IrisMed.Models
         {
         }
         public DbSet<PatientQueries> Queries { get; set; }
+        public DbSet<IrisMed.Models.ContactUsModel> ContactUsModels { get; set; }
 
     }
 
-    public class ContactUsModel : PageModel
+    public class ContactUsModel
     {
         [Key]
+        public int Id { get; set; }
+
         [Required]
         public string Name { get; set; } = "";
 
