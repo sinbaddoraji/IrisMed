@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IrisMed.Views.Misc
+namespace IrisMed.Views.Home
 {
-    public class AppointmentsModel : PageModel
+    public class CheckupModel : PageModel
     {
         public void OnGet()
         {

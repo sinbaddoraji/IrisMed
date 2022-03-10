@@ -23,9 +23,9 @@ namespace IrisMed.Controllers
             return View(_context.Queries.Select(x => ToModel(x)).ToList());
         }
 
-        private static ContactUsModel ToModel(PatientQueries patientQueries)
+        private static ContactUs ToModel(PatientQueries patientQueries)
         {
-            return new ContactUsModel()
+            return new ContactUs()
             {
                 Id = patientQueries.Id,
                 Name = patientQueries.Name,

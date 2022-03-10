@@ -4,6 +4,7 @@ using IrisMed.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IrisMed.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220310211211_career")]
+    partial class career
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,7 +145,7 @@ namespace IrisMed.Data.Migrations
                     b.ToTable("Queries", (string)null);
                 });
 
-            modelBuilder.Entity("IrisMed.Models.Appointment", b =>
+            modelBuilder.Entity("IrisMed.Models.Appointments", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,7 +178,7 @@ namespace IrisMed.Data.Migrations
                     b.ToTable("Appointments", (string)null);
                 });
 
-            modelBuilder.Entity("IrisMed.Models.Career", b =>
+            modelBuilder.Entity("IrisMed.Models.Careers", b =>
                 {
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(450)");

@@ -16,11 +16,30 @@ namespace IrisMed.Data
         {
             base.OnModelCreating(modelBuilder);
 
+
             modelBuilder.Entity<IrisUser>()
             .ToTable("IrisUser");
 
             modelBuilder.Entity<PatientQueries>()
             .ToTable("Queries").HasKey("Id");
+
+            modelBuilder.Entity<Appointment>()
+            .ToTable("Appointments");
+
+            modelBuilder.Entity<Career>()
+            .ToTable("Careers");
+
+            modelBuilder.Entity<Inventory>()
+            .ToTable("Inventory");
+
+            modelBuilder.Entity<Logs>()
+            .ToTable("Logs");
+
+            modelBuilder.Entity<Shift>()
+            .ToTable("Shift");
+
+            modelBuilder.Entity<StaffBoard>()
+            .ToTable("StaffBoard");
 
         }
 

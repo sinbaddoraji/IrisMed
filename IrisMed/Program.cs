@@ -3,6 +3,7 @@ using IrisMed.Data;
 using IrisMed.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<IrisMedContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<CareersContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<AppointmentsContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ContactUsContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
