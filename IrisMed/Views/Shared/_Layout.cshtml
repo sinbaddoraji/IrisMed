@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using IrisMed.Areas.Identity.Data;
+@inject SignInManager<IrisUser> SignInManager
+@inject UserManager<IrisUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />

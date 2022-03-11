@@ -10,25 +10,19 @@
 @inject UserManager<IrisUser> UserManager
 
 
-<h1>Create</h1>
 
-<h4>Appointments</h4>
-<hr />
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="row">
-        <div class="col-md-4">
+        <div class="form_sect">
+            <h4 style="color:white">Appointments</h4>
             <form asp-action="Create">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="DoctorName" class="control-label"></label>
-                    <input asp-for="DoctorName" class="form-control" />
-                    <span asp-validation-for="DoctorName" class="text-danger"></span>
+                    <input asp-for="DoctorName" class="form-control" value="NoName" hidden/>
                 </div>
                 <div class="form-group">
-                    <label asp-for="PatientName" class="control-label"></label>
-                    <input asp-for="PatientName" class="form-control" />
-                    <span asp-validation-for="PatientName" class="text-danger"></span>
+                    <input asp-for="PatientName" class="form-control" value="@User.Identity.Name" hidden />
                 </div>
                 <div class="form-group">
                     <label asp-for="PatientComplaints" class="control-label"></label>
@@ -52,9 +46,6 @@
         </div>
     </div>
 
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
 }
 else
 {
@@ -95,5 +86,14 @@ else
       background-size: cover;
       height: 100%;
       width: 100%;
+}
+
+.form_sect {
+  padding: 50px;
+  text-align: center;
+  background-color:  rgba(13, 13, 13, 0.7);
+  color: white;
+  margin-left:25%; 
+  width:50%
 }
 </style>

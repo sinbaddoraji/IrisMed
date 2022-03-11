@@ -1,6 +1,8 @@
-﻿using IrisMed.Data;
+﻿using IrisMed.Areas.Identity.Data;
+using IrisMed.Data;
 using IrisMed.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -10,16 +12,23 @@ namespace IrisMed.Controllers
     {
 
         private ContactUsContext _context;
+        private readonly UserManager<IrisUser> _userManager;
 
-        public QueriesController(ContactUsContext context)
+        public QueriesController(ContactUsContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
 
         // GET: QueriesController
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
             return View(_context.Queries.Select(x => ToModel(x)).ToList());
         }
 
@@ -35,14 +44,26 @@ namespace IrisMed.Controllers
         }
 
         // GET: QueriesController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> DetailsAsync(int id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             return View();
         }
 
         // GET: QueriesController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType > 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
             return View();
         }
 
@@ -70,8 +91,14 @@ namespace IrisMed.Controllers
             }
         }
 
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             return View();
         }
 

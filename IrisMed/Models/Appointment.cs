@@ -17,9 +17,11 @@ namespace IrisMed.Models
         public string PatientComplaints { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public string AppointmentTime { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public string AppointmentDate { get; set; }
     }
 }

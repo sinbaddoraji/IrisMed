@@ -8,27 +8,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IrisMed.Data;
 using IrisMed.Models;
+using Microsoft.AspNetCore.Identity;
+using IrisMed.Areas.Identity.Data;
 
 namespace IrisMed.Controllers
 {
     public class AppointmentsController : Controller
     {
         private readonly AppointmentsContext _context;
+        private readonly UserManager<IrisUser> _userManager;
+        private static Random _random = new Random();
+        private static string[] doctors = { "Dr Emeka", "Dr Lui", "Dr Chen" };
 
-        public AppointmentsController(AppointmentsContext context)
+        public AppointmentsController(AppointmentsContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+
 
         // GET: Appointments
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
             return View(await _context.Appointments.ToListAsync());
         }
 
         // GET: Appointments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
             if (id == null)
             {
                 return NotFound();
@@ -45,8 +62,13 @@ namespace IrisMed.Controllers
         }
 
         // GET: Appointments/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType > 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
             return View();
         }
 
@@ -59,6 +81,16 @@ namespace IrisMed.Controllers
         {
             if (ModelState.IsValid)
             {
+                appointments.PatientName = appointments.PatientName.Split('@')[0];
+                appointments.DoctorName = doctors[_random.Next(0,doctors.Length)];
+
+                var date = DateTime.Parse(appointments.AppointmentDate);
+
+                if (date < DateTime.Now)
+                {
+                    return View(appointments);
+                }
+
                 _context.Add(appointments);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,6 +101,12 @@ namespace IrisMed.Controllers
         // GET: Appointments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -89,6 +127,12 @@ namespace IrisMed.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,DoctorName,PatientName,PatientComplaints,AppointmentTime,AppointmentDate")] Appointment appointments)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             if (id != appointments.Id)
             {
                 return NotFound();
@@ -112,7 +156,13 @@ namespace IrisMed.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+
+                var date = DateTime.Parse(appointments.AppointmentDate);
+
+                if (date >= DateTime.Now)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(appointments);
         }
@@ -120,6 +170,12 @@ namespace IrisMed.Controllers
         // GET: Appointments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null & user.StaffType == 0 || user.StaffType == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             if (id == null)
             {
                 return NotFound();
