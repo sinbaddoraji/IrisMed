@@ -4,8 +4,11 @@ using IrisMed.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using IrisMed;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 
 
@@ -23,6 +26,8 @@ builder.Services.AddDbContext<InventoryContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ContactUsContext>(options => 
 options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<DataShiftContext>(options =>
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

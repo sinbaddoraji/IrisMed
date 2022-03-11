@@ -19,6 +19,10 @@
     "mssql5": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:InventoryContext"
+    },
+    "mssql6": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DataShiftContext"
     }
   }
 }

@@ -11,12 +11,15 @@ namespace IrisMed.Models
         public string StaffName { get; set; } = "";
 
         [Required]
+        [DataType(DataType.Date)]
         public string Shift_Date { get; set; } = "";
 
         [Required]
+        [DataType(DataType.Time)]
         public string Shift_Start { get; set; } = "";
 
         [Required]
+        [DataType(DataType.Time)]
         public string Shift_End { get; set; } = "";
     }
 }

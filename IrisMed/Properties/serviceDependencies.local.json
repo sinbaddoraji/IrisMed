@@ -19,6 +19,10 @@
     "mssql5": {
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:InventoryContext"
+    },
+    "mssql6": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DataShiftContext"
     }
   }
 }
