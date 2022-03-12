@@ -1,0 +1,56 @@
+﻿@model IEnumerable<IrisMed.Models.StaffBoard>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+}
+@using Microsoft.AspNetCore.Identity
+@using IrisMed.Areas.Identity.Data;
+@inject SignInManager<IrisUser> SignInManager
+@inject UserManager<IrisUser> UserManager
+
+<h1>Staff Board</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StaffMessage)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffMessage)
+            </td>
+            
+            @if((bool)User.Identity?.Name?.Split('@')[0].Equals(item.StaffName))
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+             }
+             else
+             {
+                 <td></td>
+             }
+
+        </tr>
+}
+    </tbody>
+</table>

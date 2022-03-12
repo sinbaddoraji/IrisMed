@@ -11,6 +11,7 @@ namespace IrisMed.Models
         public string StaffName { get; set; } = "";
 
         [Required]
+        [DataType(DataType.MultilineText)]
         public string StaffMessage { get; set; } = "";
     }
 }

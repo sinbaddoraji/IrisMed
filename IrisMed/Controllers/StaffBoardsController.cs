@@ -6,80 +6,45 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using IrisMed;
+using IrisMed.Data;
 using IrisMed.Models;
 using Microsoft.AspNetCore.Identity;
 using IrisMed.Areas.Identity.Data;
-using System.Diagnostics;
 
 namespace IrisMed.Controllers
 {
-    public class ShiftsController : Controller
+    public class StaffBoardsController : Controller
     {
-        private readonly DataShiftContext _context;
+        private readonly StaffBoardContext _context;
         private readonly UserManager<IrisUser> _userManager;
 
-        public ShiftsController(DataShiftContext context, UserManager<IrisUser> userManager)
+        public StaffBoardsController(StaffBoardContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Shifts
+        // GET: StaffBoards
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+
+            if (user == null || user.StaffType == 0 || user.StaffType == null)
             {
-                return RedirectToAction(nameof(Error));
+                return NotFound();
             }
 
-            var list = await _context.Shift.ToListAsync();
-            string username = User.Identity.Name.Split('@')[0];
-
-            if(user.StaffType > 1)
-            {
-                return View(list);
-            }
-            else
-            {
-                list = list.Where(x => x.StaffName == username).ToList();
-                return View(list);
-            }
-
-            
+            return View(await _context.StaffBoard.ToListAsync());
         }
 
-        // GET: Shifts/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Shifts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StaffName,Shift_Date,Shift_Start,Shift_End")] Shift shift)
-        {
-            if (ModelState.IsValid)
-            {
-                shift.StaffName = shift.StaffName.Split('@')[0];
-                _context.Add(shift);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(shift);
-        }
-
-        // GET: Shifts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        // GET: StaffBoards/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+
+            if (user == null || user.StaffType == 0 || user.StaffType == null)
             {
-                return RedirectToAction(nameof(Error));
+                return NotFound();
             }
 
             if (id == null)
@@ -87,22 +52,81 @@ namespace IrisMed.Controllers
                 return NotFound();
             }
 
-            var shift = await _context.Shift.FindAsync(id);
-            if (shift == null || shift.StaffName != user.UserName.Split('@')[0] && user.StaffType < 2)
+            var staffBoard = await _context.StaffBoard
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (staffBoard == null)
             {
                 return NotFound();
             }
-            return View(shift);
+
+            return View(staffBoard);
         }
 
-        // POST: Shifts/Edit/5
+        // GET: StaffBoards/Create
+        public async Task<IActionResult> CreateAsync()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+
+            if (user == null || user.StaffType == 0 || user.StaffType == null)
+            {
+                return NotFound();
+            }
+
+            return View();
+        }
+
+        // POST: StaffBoards/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StaffName,Shift_Date,Shift_Start,Shift_End")] Shift shift)
+        public async Task<IActionResult> Create([Bind("Id,StaffName,StaffMessage")] StaffBoard staffBoard)
         {
-            if (id != shift.Id)
+            if (ModelState.IsValid)
+            {
+                staffBoard.StaffName = staffBoard.StaffName.Split('@')[0];
+                _context.Add(staffBoard);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(staffBoard);
+        }
+
+        // GET: StaffBoards/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            
+
+
+            if (user == null || user.StaffType == 0 || user.StaffType == null)
+            {
+                return NotFound();
+            }
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var staffBoard = await _context.StaffBoard.FindAsync(id);
+            if (staffBoard == null || staffBoard.StaffName != user.UserName.Split('@')[0])
+            {
+                return NotFound();
+            }
+            return View(staffBoard);
+        }
+
+        // POST: StaffBoards/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StaffName,StaffMessage")] StaffBoard staffBoard)
+        {
+
+            if (id != staffBoard.Id)
             {
                 return NotFound();
             }
@@ -111,12 +135,12 @@ namespace IrisMed.Controllers
             {
                 try
                 {
-                    _context.Update(shift);
+                    _context.Update(staffBoard);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShiftExists(shift.Id))
+                    if (!StaffBoardExists(staffBoard.Id))
                     {
                         return NotFound();
                     }
@@ -127,16 +151,17 @@ namespace IrisMed.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(shift);
+            return View(staffBoard);
         }
 
-        // GET: Shifts/Delete/5
+        // GET: StaffBoards/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+
+            if (user == null || user.StaffType == 0 || user.StaffType == null)
             {
-                return RedirectToAction(nameof(Error));
+                return NotFound();
             }
 
             if (id == null)
@@ -144,35 +169,30 @@ namespace IrisMed.Controllers
                 return NotFound();
             }
 
-            var shift = await _context.Shift
+            var staffBoard = await _context.StaffBoard
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (shift == null || shift.StaffName != user.UserName.Split('@')[0] && user.StaffType < 2)
+            if (staffBoard == null || staffBoard.StaffName != user.UserName.Split('@')[0])
             {
                 return NotFound();
             }
 
-            return View(shift);
+            return View(staffBoard);
         }
 
-        // POST: Shifts/Delete/5
+        // POST: StaffBoards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var shift = await _context.Shift.FindAsync(id);
-            _context.Shift.Remove(shift);
+            var staffBoard = await _context.StaffBoard.FindAsync(id);
+            _context.StaffBoard.Remove(staffBoard);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Error()
+        private bool StaffBoardExists(int id)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        private bool ShiftExists(int id)
-        {
-            return _context.Shift.Any(e => e.Id == id);
+            return _context.StaffBoard.Any(e => e.Id == id);
         }
     }
 }

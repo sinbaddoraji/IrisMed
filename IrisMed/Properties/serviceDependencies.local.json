@@ -23,6 +23,10 @@
     "mssql6": {
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:DataShiftContext"
+    },
+    "mssql7": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:StaffBoardContext"
     }
   }
 }
