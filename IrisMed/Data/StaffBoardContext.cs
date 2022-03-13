@@ -17,6 +17,5 @@ namespace IrisMed.Data
 
         public DbSet<IrisMed.Models.StaffBoard> StaffBoard { get; set; }
 
-        public DbSet<IrisMed.Models.Career> Career { get; set; }
     }
 }

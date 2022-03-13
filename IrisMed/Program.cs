@@ -14,8 +14,6 @@ builder.Services.AddDbContext<IrisMedContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<CareersContext>(options =>
-    options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<AppointmentsContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<InventoryContext>(options =>
