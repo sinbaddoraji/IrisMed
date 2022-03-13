@@ -66,16 +66,11 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
             [DataType(DataType.Date)]
             public string DateOfBirth { get; set; }
 
-            [Display(Name = "Ethniticy")]
-            public string Ethniticy { get; set; }
+            [Display(Name = "Height (CM)")]
+            public int Height { get; set; }
 
-            [Display(Name = "Height")]
-            [DataType(DataType.Text)]
-            public string Height { get; set; }
-
-            [Display(Name = "Weight")]
-            [DataType(DataType.Text)]
-            public string Weight { get; set; }
+            [Display(Name = "Weight (CM)")]
+            public int Weight { get; set; }
         }
 
         private async Task LoadAsync(IrisUser user)
@@ -90,7 +85,6 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
                 FullName = user.FullName,
                 Gender = user.Gender,
                 DateOfBirth = user.DateOfBirth,
-                Ethniticy = user.Ethniticy,
                 Height = user.Height,
                 Weight = user.Weight
             };
@@ -125,7 +119,6 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
             user.FullName = Input.FullName;
             user.Gender = Input.Gender;
             user.DateOfBirth = Input.DateOfBirth;
-            user.Ethniticy = Input.Ethniticy;
             user.Height = Input.Height;
             user.Weight = Input.Weight;
 

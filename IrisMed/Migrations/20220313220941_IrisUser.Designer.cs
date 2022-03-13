@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace IrisMed.Data.Migrations
+namespace IrisMed.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220310211305_Inventory")]
-    partial class Inventory
+    [Migration("20220313220941_IrisUser")]
+    partial class IrisUser
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,14 +35,12 @@ namespace IrisMed.Data.Migrations
                     b.Property<string>("AssignedMedication")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Assigned_ward")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DateOfBirth")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -52,18 +50,16 @@ namespace IrisMed.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Ethniticy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Height")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Height")
+                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -94,7 +90,7 @@ namespace IrisMed.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("StaffType")
+                    b.Property<int>("StaffType")
                         .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -104,8 +100,8 @@ namespace IrisMed.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Weight")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -145,7 +141,7 @@ namespace IrisMed.Data.Migrations
                     b.ToTable("Queries", (string)null);
                 });
 
-            modelBuilder.Entity("IrisMed.Models.Appointments", b =>
+            modelBuilder.Entity("IrisMed.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,35 +172,6 @@ namespace IrisMed.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointments", (string)null);
-                });
-
-            modelBuilder.Entity("IrisMed.Models.Careers", b =>
-                {
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte[]>("CoverLetter")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("Resume")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Email");
-
-                    b.ToTable("Careers", (string)null);
                 });
 
             modelBuilder.Entity("IrisMed.Models.Inventory", b =>

@@ -29,7 +29,7 @@ namespace IrisMed.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            if (user == null|| user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user == null|| user != null && user.StaffType < 2)
             {
                 return NotFound();
             }
@@ -52,7 +52,7 @@ namespace IrisMed.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            if (user == null || user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user == null || user != null && user.StaffType < 2)
             {
                 return NotFound();
             }

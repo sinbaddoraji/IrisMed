@@ -34,7 +34,7 @@ namespace IrisMed.Views
         public async Task<IActionResult> Details(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user != null && user.StaffType < 2)
             {
                 return RedirectToAction(nameof(Create));
             }
@@ -58,7 +58,7 @@ namespace IrisMed.Views
         public async Task<IActionResult> CreateAsync()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user != null && user.StaffType < 2)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -86,7 +86,7 @@ namespace IrisMed.Views
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user != null && user.StaffType < 2)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -143,7 +143,7 @@ namespace IrisMed.Views
         public async Task<IActionResult> Delete(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2 || user.StaffType == null)
+            if (user != null && user.StaffType < 2)
             {
                 return RedirectToAction(nameof(Index));
             }

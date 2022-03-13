@@ -26,9 +26,6 @@ namespace IrisMed.Data
             modelBuilder.Entity<Appointment>()
             .ToTable("Appointments");
 
-            modelBuilder.Entity<Career>()
-            .ToTable("Careers");
-
             modelBuilder.Entity<Inventory>()
             .ToTable("Inventory");
 

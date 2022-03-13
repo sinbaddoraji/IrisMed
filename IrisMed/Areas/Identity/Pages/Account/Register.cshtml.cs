@@ -113,13 +113,11 @@ namespace IrisMed.Areas.Identity.Pages.Account
             [Display(Name = "Gender")]
             public string Gender { get; set; }
 
-            [Display(Name = "Height")]
-            [DataType(DataType.Text)]
-            public string Height { get; set; }
+            [Display(Name = "Height (CM)")]
+            public int Height { get; set; }
 
-            [Display(Name = "Weight")]
-            [DataType(DataType.Text)]
-            public string Weight { get; set; }
+            [Display(Name = "Weight (KG)")]
+            public int Weight { get; set; }
         }
 
 

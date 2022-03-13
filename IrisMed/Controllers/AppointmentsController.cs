@@ -34,7 +34,7 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
@@ -45,7 +45,7 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
@@ -115,7 +115,7 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
@@ -141,7 +141,7 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("Id,DoctorName,PatientName,PatientComplaints,AppointmentTime,AppointmentDate")] Appointment appointments)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType == 0 || user.StaffType == null)
+            if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
@@ -184,7 +184,7 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Delete(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null & user.StaffType == 0 || user.StaffType == null)
+            if (user != null & user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
