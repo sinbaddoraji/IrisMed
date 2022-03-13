@@ -11,6 +11,9 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using IrisMed.Areas.Identity.Data;
+using IrisMed.Controllers;
+using IrisMed.Data;
+using IrisMed.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,13 +33,15 @@ namespace IrisMed.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IrisUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly LogsContext _logsContext;
 
         public RegisterModel(
             UserManager<IrisUser> userManager,
             IUserStore<IrisUser> userStore,
             SignInManager<IrisUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            LogsContext logsContext)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +49,7 @@ namespace IrisMed.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _logsContext = logsContext;
         }
 
         /// <summary>
@@ -146,6 +152,15 @@ namespace IrisMed.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    var log = new Logs()
+                    {
+                        Name = $"{Input.FullName}",
+                        Action = "created an account",
+                        Timestamp = DateTime.Now.ToString()
+                    };
+                    await _logsContext.AddAsync(log);
+                    await _logsContext.SaveChangesAsync();
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

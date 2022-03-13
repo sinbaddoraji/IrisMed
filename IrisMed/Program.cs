@@ -8,12 +8,6 @@ using IrisMed;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
-
-
-
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<IrisMedContext>(options =>
@@ -31,6 +25,8 @@ options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<DataShiftContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDbContext<StaffBoardContext>(options =>
+    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<LogsContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();

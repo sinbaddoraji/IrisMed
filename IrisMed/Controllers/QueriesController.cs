@@ -13,11 +13,14 @@ namespace IrisMed.Controllers
 
         private ContactUsContext _context;
         private readonly UserManager<IrisUser> _userManager;
+        private readonly LogsContext _logsContext;
 
-        public QueriesController(ContactUsContext context, UserManager<IrisUser> userManager)
+        public QueriesController(ContactUsContext context, UserManager<IrisUser> userManager
+            , LogsContext logsContext)
         {
             _context = context;
             _userManager = userManager;
+            _logsContext = logsContext;
         }
 
 
@@ -79,6 +82,17 @@ namespace IrisMed.Controllers
                     _context.Add(collection);
                     _context.SaveChanges();
                     _context.Queries.Add(collection);
+
+
+                    var log = new Logs()
+                    {
+                        Name = $"{collection.Name}",
+                        Action = "sumbitted a query",
+                        Timestamp = DateTime.Now.ToString()
+                    };
+
+                    _logsContext.Add(log);
+                    _logsContext.SaveChanges();
 
                     return RedirectToAction(nameof(Index));
                 }

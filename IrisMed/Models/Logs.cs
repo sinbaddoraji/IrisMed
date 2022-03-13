@@ -15,6 +15,7 @@ namespace IrisMed.Models
         public string Action { get; set; }
 
         [Required]
+        [DataType(DataType.DateTime)]
         public string Timestamp { get; set; }
     }
 }

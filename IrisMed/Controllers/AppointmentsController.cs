@@ -19,11 +19,14 @@ namespace IrisMed.Controllers
         private readonly UserManager<IrisUser> _userManager;
         private static Random _random = new Random();
         private static string[] doctors = { "Dr Emeka", "Dr Lui", "Dr Chen" };
+        private readonly LogsContext _logsContext;
 
-        public AppointmentsController(AppointmentsContext context, UserManager<IrisUser> userManager)
+        public AppointmentsController(AppointmentsContext context, UserManager<IrisUser> userManager
+            , LogsContext logsContext)
         {
             _context = context;
             _userManager = userManager;
+            _logsContext = logsContext;
         }
 
 
@@ -93,6 +96,16 @@ namespace IrisMed.Controllers
 
                 _context.Add(appointments);
                 await _context.SaveChangesAsync();
+
+                var log = new Logs()
+                {
+                    Name = $"{appointments.PatientName}",
+                    Action = $"booked an appointment with {appointments.DoctorName}",
+                    Timestamp = DateTime.Now.ToString()
+                };
+                await _logsContext.AddAsync(log);
+                await _logsContext.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             return View(appointments);

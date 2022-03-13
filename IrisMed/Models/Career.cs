@@ -1,23 +1,29 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace IrisMed.Models
 {
     public class Career
     {
+        [Key]
         public int Id { get; set; }
 
-        public string FirstName { get; set; }    
+        [Required]
+        public string FirstName { get; set; }
 
+        [Required]
         public string LastName { get; set; }
 
-        [Key]
         [EmailAddress]
         [Required]
         public string Email { get; set; }
 
         [Required]
-        public byte[] Resume { get; set; }
+        [NotMapped]
+        public IFormFile Resume { get; set; }
 
-        public byte[] CoverLetter { get; set; }
+        [Required]
+        [NotMapped]
+        public IFormFile CoverLetter { get; set; }
     }
 }

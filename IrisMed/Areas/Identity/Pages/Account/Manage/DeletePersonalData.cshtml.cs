@@ -6,6 +6,8 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using IrisMed.Areas.Identity.Data;
+using IrisMed.Data;
+using IrisMed.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,15 +20,18 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IrisUser> _userManager;
         private readonly SignInManager<IrisUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly LogsContext _logsContext;
 
         public DeletePersonalDataModel(
             UserManager<IrisUser> userManager,
             SignInManager<IrisUser> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            LogsContext logsContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _logsContext = logsContext;
         }
 
         /// <summary>
@@ -97,6 +102,17 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
             await _signInManager.SignOutAsync();
 
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+
+
+            var log = new Logs()
+            {
+                Name = $"{user.FullName}",
+                Action = "created a new account",
+                Timestamp = DateTime.Now.ToString()
+            };
+
+            _logsContext.Add(log);
+            _logsContext.SaveChanges();
 
             return Redirect("~/");
         }

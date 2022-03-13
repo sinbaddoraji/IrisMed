@@ -8,15 +8,13 @@ using IrisMed.Models;
 
 namespace IrisMed.Data
 {
-    public class StaffBoardContext : DbContext
+    public class LogsContext : DbContext
     {
-        public StaffBoardContext (DbContextOptions<StaffBoardContext> options)
+        public LogsContext (DbContextOptions<LogsContext> options)
             : base(options)
         {
         }
 
-        public DbSet<IrisMed.Models.StaffBoard> StaffBoard { get; set; }
-
-        public DbSet<IrisMed.Models.Career> Career { get; set; }
+        public DbSet<IrisMed.Models.Logs> Logs { get; set; }
     }
 }

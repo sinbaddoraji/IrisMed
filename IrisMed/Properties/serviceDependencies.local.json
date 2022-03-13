@@ -27,6 +27,10 @@
     "mssql7": {
       "type": "mssql.local",
       "connectionId": "ConnectionStrings:StaffBoardContext"
+    },
+    "mssql8": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:LogsContext"
     }
   }
 }
