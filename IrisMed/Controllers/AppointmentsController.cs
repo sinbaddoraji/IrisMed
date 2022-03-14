@@ -13,20 +13,28 @@ using IrisMed.Areas.Identity.Data;
 
 namespace IrisMed.Controllers
 {
+    public class PatientAppointment : Appointment
+    {
+        public double MedicalBill { get; set; }
+    }
+
     public class AppointmentsController : Controller
     {
         private readonly AppointmentsContext _context;
         private readonly UserManager<IrisUser> _userManager;
         private static Random _random = new Random();
-        private static string[] doctors = { "Dr Emeka", "Dr Lui", "Dr Chen" };
+        private static string[] doctors;
         private readonly LogsContext _logsContext;
+        private readonly ApplicationDbContext _applicationDbContext;
 
         public AppointmentsController(AppointmentsContext context, UserManager<IrisUser> userManager
-            , LogsContext logsContext)
+            , LogsContext logsContext, ApplicationDbContext applicationDbContext)
         {
             _context = context;
             _userManager = userManager;
             _logsContext = logsContext;
+            _applicationDbContext = applicationDbContext;
+            doctors = _applicationDbContext.Users.Where(x => x.StaffType == 1).Select(x => x.FullName).ToArray();
         }
 
 
@@ -34,11 +42,153 @@ namespace IrisMed.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 && !_context.Appointments.Where(x=> x.PatientName == user.FullName).Any())
+            {
+                return RedirectToAction(nameof(Create));
+            }
+            if(user.StaffType == 0)
+            {
+                return RedirectToAction(nameof(Appointment));
+            }
+            return View(await _context.Appointments.ToListAsync());
+        }
+
+        // GET: Appointments
+        public async Task<IActionResult> Appointment()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0 && !_context.Appointments.Where(x => x.PatientName == user.FullName).Any())
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
+            return View(await _context.Appointments.Where(x => x.PatientName == user.FullName).ToListAsync());
+        }
+
+        // GET: Patients
+        public async Task<IActionResult> Patient()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Create));
             }
-            return View(await _context.Appointments.ToListAsync());
+            
+            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            string doctor = user.FullName;
+
+            var fileterdPatients = new List<IrisUser>();
+            foreach(var patient in patients)
+            {
+                if(_context.Appointments.Where(x => x.PatientName == patient.FullName && x.DoctorName.Equals(doctor)).Any())
+                {
+                    fileterdPatients.Add(patient);
+                }
+            }
+
+            
+            return View(fileterdPatients.Distinct());
+        }
+
+        // GET: Patients/Edit/5
+        public async Task<IActionResult> DiagnoseAsync(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
+            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            string doctor = user.FullName;
+
+            var fileterdPatients = new List<IrisUser>();
+            foreach (var patient in patients)
+            {
+                if (_context.Appointments.Where(x => x.PatientName == patient.FullName && x.DoctorName.Equals(doctor)).Any())
+                {
+                    fileterdPatients.Add(patient);
+                }
+            }
+
+            var pt = fileterdPatients.First();
+            if (pt == null)
+            {
+                return NotFound();
+            }
+            return View(pt);
+        }
+
+        // POST: Patients/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Diagnose(string id, [Bind("FullName,Gender,DateOfBirth,Height,Weight,AssignedMedication,MedicalConditons, MedicalBill")] IrisUser patient)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (id != patient.FullName.Replace(" ", ""))
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var p = _applicationDbContext.Users.Where(x => x.FullName == patient.FullName).First();
+                    p.MedicalConditons = patient.MedicalConditons;
+                    p.AssignedMedication = patient.MedicalConditons;
+
+
+                    _applicationDbContext.Update(p);
+                    await _applicationDbContext.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PatientExists(patient.FullName, user))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Patient));
+            }
+            return View(patient);
+        }
+
+
+        private bool PatientExists(string id, IrisUser user)
+        {
+            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            string doctor = user.FullName;
+
+            var fileterdPatients = new List<IrisUser>();
+            foreach (var patient in patients)
+            {
+                if (_context.Appointments.Where(x => x.PatientName == patient.FullName && x.DoctorName.Equals(doctor)).Any())
+                {
+                    fileterdPatients.Add(patient);
+                }
+            }
+            return fileterdPatients.Any();
         }
 
         // GET: Appointments/Details/5
@@ -82,9 +232,11 @@ namespace IrisMed.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,DoctorName,PatientName,PatientComplaints,AppointmentTime,AppointmentDate")] Appointment appointments)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
             if (ModelState.IsValid)
             {
-                appointments.PatientName = appointments.PatientName.Split('@')[0];
+                appointments.PatientName = user.FullName;
                 appointments.DoctorName = doctors[_random.Next(0,doctors.Length)];
 
                 var date = DateTime.Parse(appointments.AppointmentDate);
@@ -109,6 +261,62 @@ namespace IrisMed.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(appointments);
+        }
+
+        // GET: Appointments/Edit/5
+        public async Task<IActionResult> Pay(int? id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType > 0)
+            {
+                return NotFound();
+            }
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            return View();
+        }
+
+        // POST: Appointments/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Pay(int id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType > 0)
+            {
+                return NotFound();
+            }
+
+            var appointment = await _context.FindAsync<Appointment>(id);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    appointment.MedicalBill = -1;
+                    _context.Update(appointment);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!AppointmentsExists(appointment.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+            }
+            return RedirectToAction(nameof(Appointment));
         }
 
         // GET: Appointments/Edit/5
@@ -138,7 +346,7 @@ namespace IrisMed.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DoctorName,PatientName,PatientComplaints,AppointmentTime,AppointmentDate")] Appointment appointments)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DoctorName,PatientName,PatientComplaints,AppointmentTime,AppointmentDate,MedicalBill")] Appointment appointments)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user != null && user.StaffType == 0)

@@ -28,8 +28,10 @@ namespace IrisMed.Areas.Identity.Data
         [Range(10, int.MaxValue, ErrorMessage = "Please enter a value from 10 - 200")]
         public int Weight { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string? AssignedMedication  { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string? MedicalConditons { get; set; }
 
         //Staff details

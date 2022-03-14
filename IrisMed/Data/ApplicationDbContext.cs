@@ -7,6 +7,7 @@ namespace IrisMed.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IrisUser>
     {
+        public override DbSet<IrisUser> Users { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

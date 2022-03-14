@@ -23,7 +23,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.AppointmentDate)
             </th>
-              <th>
+            <th>
                 @Html.DisplayNameFor(model => model.MedicalBill)
             </th>
             <th></th>
@@ -44,6 +44,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.AppointmentDate)
             </td>
+
             @if (item.MedicalBill == -1)
             {
                     <td>Paid</td>
@@ -54,14 +55,14 @@
                     £@Html.DisplayFor(modelItem => item.MedicalBill)
                  </td>
             }
-               
-            
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Patient">Patient Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
+            @if(item.MedicalBill > 0)
+            {
+                <td>
+                    <a asp-action="Pay" asp-route-id="@item.Id">Pay Bill</a>
+                </td>
+            }
+                
         </tr>
 }
     </tbody>

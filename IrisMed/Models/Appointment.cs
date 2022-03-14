@@ -23,5 +23,7 @@ namespace IrisMed.Models
         [Required]
         [DataType(DataType.Date)]
         public string AppointmentDate { get; set; }
+
+        public double MedicalBill { get; set; }
     }
 }
