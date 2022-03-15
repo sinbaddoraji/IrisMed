@@ -4,33 +4,8 @@
       "type": "mssql",
       "connectionId": "ConnectionStrings:DefaultConnection"
     },
-    "mssql2": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:IrisMedContextConnection"
-    },
-    "mssql3": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:CareersContext"
-    },
-    "mssql4": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:AppointmentsContext"
-    },
-    "mssql5": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:InventoryContext"
-    },
-    "mssql6": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:DataShiftContext"
-    },
-    "mssql7": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:StaffBoardContext"
-    },
-    "mssql8": {
-      "type": "mssql",
-      "connectionId": "ConnectionStrings:LogsContext"
+    "secrets1": {
+      "type": "secrets"
     }
   }
 }

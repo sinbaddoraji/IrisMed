@@ -20,21 +20,16 @@ namespace IrisMed.Controllers
 
     public class AppointmentsController : Controller
     {
-        private readonly AppointmentsContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
         private static Random _random = new Random();
         private static string[] doctors;
-        private readonly LogsContext _logsContext;
-        private readonly ApplicationDbContext _applicationDbContext;
 
-        public AppointmentsController(AppointmentsContext context, UserManager<IrisUser> userManager
-            , LogsContext logsContext, ApplicationDbContext applicationDbContext)
+        public AppointmentsController(UserManager<IrisUser> userManager,ApplicationDbContext context)
         {
             _context = context;
             _userManager = userManager;
-            _logsContext = logsContext;
-            _applicationDbContext = applicationDbContext;
-            doctors = _applicationDbContext.Users.Where(x => x.StaffType == 1).Select(x => x.FullName).ToArray();
+            doctors = _context.Users.Where(x => x.StaffType == 1).Select(x => x.FullName).ToArray();
         }
 
 
@@ -74,7 +69,7 @@ namespace IrisMed.Controllers
                 return RedirectToAction(nameof(Create));
             }
             
-            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            var patients = _context.Users.Where(x => x.StaffType == 0).ToList();
             string doctor = user.FullName;
 
             var fileterdPatients = new List<IrisUser>();
@@ -104,7 +99,7 @@ namespace IrisMed.Controllers
                 return RedirectToAction(nameof(Create));
             }
 
-            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            var patients = _context.Users.Where(x => x.StaffType == 0).ToList();
             string doctor = user.FullName;
 
             var fileterdPatients = new List<IrisUser>();
@@ -150,13 +145,13 @@ namespace IrisMed.Controllers
             {
                 try
                 {
-                    var p = _applicationDbContext.Users.Where(x => x.FullName == patient.FullName).First();
+                    var p = _context.Users.Where(x => x.FullName == patient.FullName).First();
                     p.MedicalConditons = patient.MedicalConditons;
                     p.AssignedMedication = patient.MedicalConditons;
 
 
-                    _applicationDbContext.Update(p);
-                    await _applicationDbContext.SaveChangesAsync();
+                    _context.Update(p);
+                    await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -177,7 +172,7 @@ namespace IrisMed.Controllers
 
         private bool PatientExists(string id, IrisUser user)
         {
-            var patients = _applicationDbContext.Users.Where(x => x.StaffType == 0).ToList();
+            var patients = _context.Users.Where(x => x.StaffType == 0).ToList();
             string doctor = user.FullName;
 
             var fileterdPatients = new List<IrisUser>();
@@ -255,8 +250,8 @@ namespace IrisMed.Controllers
                     Action = $"booked an appointment with {appointments.DoctorName}",
                     Timestamp = DateTime.Now.ToString()
                 };
-                await _logsContext.AddAsync(log);
-                await _logsContext.SaveChangesAsync();
+                await _context.AddAsync(log);
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }

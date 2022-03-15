@@ -8,6 +8,16 @@ namespace IrisMed.Data
     public class ApplicationDbContext : IdentityDbContext<IrisUser>
     {
         public override DbSet<IrisUser> Users { get; set; }
+        public DbSet<StaffBoard> StaffBoard { get; set; }
+        public DbSet<IrisMed.Models.Appointment> Appointments { get; set; }
+        public DbSet<IrisMed.Models.Shift> Shift { get; set; }
+
+        public DbSet<IrisMed.Models.Inventory> Inventory { get; set; }
+
+        public DbSet<IrisMed.Models.ContactUs> Queries { get; set; }
+
+        public DbSet<IrisMed.Models.Logs> Logs { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -21,7 +31,7 @@ namespace IrisMed.Data
             modelBuilder.Entity<IrisUser>()
             .ToTable("IrisUser");
 
-            modelBuilder.Entity<PatientQueries>()
+            modelBuilder.Entity<ContactUs>()
             .ToTable("Queries").HasKey("Id");
 
             modelBuilder.Entity<Appointment>()

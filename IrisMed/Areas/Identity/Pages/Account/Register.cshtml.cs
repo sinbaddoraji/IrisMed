@@ -33,7 +33,7 @@ namespace IrisMed.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IrisUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly LogsContext _logsContext;
+        private readonly ApplicationDbContext _logsContext;
 
         public RegisterModel(
             UserManager<IrisUser> userManager,
@@ -41,7 +41,7 @@ namespace IrisMed.Areas.Identity.Pages.Account
             SignInManager<IrisUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
-            LogsContext logsContext)
+            ApplicationDbContext logsContext)
         {
             _userManager = userManager;
             _userStore = userStore;

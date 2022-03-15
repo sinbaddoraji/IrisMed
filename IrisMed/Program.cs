@@ -12,19 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<AppointmentsContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<InventoryContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<ContactUsContext>(options => 
-options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<DataShiftContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<StaffBoardContext>(options =>
-    options.UseSqlServer(connectionString));
-builder.Services.AddDbContext<LogsContext>(options =>
-    options.UseSqlServer(connectionString));
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IrisUser>(options => options.SignIn.RequireConfirmedAccount = false)

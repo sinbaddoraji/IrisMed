@@ -11,82 +11,85 @@ using IrisMed.Models;
 using Microsoft.AspNetCore.Identity;
 using IrisMed.Areas.Identity.Data;
 
-namespace IrisMed.Views
+namespace IrisMed.Controllers
 {
-    public class InventoriesController : Controller
+    public class ContactUsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
 
-        public InventoriesController(ApplicationDbContext context, UserManager<IrisUser> userManager)
+        public ContactUsController(ApplicationDbContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: Inventories
+        // GET: ContactUs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Inventory.ToListAsync());
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null && user.StaffType == 0)
+            {
+                return View(await _context.Queries.Where(x => x.Name == user.FullName).ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction(nameof(StaffIndex));
+            }
+            
         }
 
-        // GET: Inventories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> StaffIndex()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2)
+            if (user != null && user.StaffType > 0)
             {
-                return RedirectToAction(nameof(Create));
+                return View(await _context.Queries.ToListAsync());
             }
-
-            if (id == null)
+            else
             {
                 return NotFound();
             }
 
-            var inventory = await _context.Inventory
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (inventory == null)
-            {
-                return NotFound();
-            }
-
-            return View(inventory);
         }
 
-        // GET: Inventories/Create
-        public async Task<IActionResult> CreateAsync()
+        // GET: ContactUs/Create
+        public IActionResult Create()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             return View();
         }
 
-        // POST: Inventories/Create
+        // POST: ContactUs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Inventory inventory)
+        public async Task<IActionResult> Create([Bind("Id,Name,Email,Content,Response")] ContactUs contactUs)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            try
             {
-                _context.Add(inventory);
+                contactUs.Name = user.FullName;
+                contactUs.Email = user.Email;
+                contactUs.Response = "";
+
+                _context.Add(contactUs);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(inventory);
+            catch(Exception ex)
+            {
+                return View(contactUs);
+            }
+            
         }
 
-        // GET: Inventories/Edit/5
+        // GET: ContactUs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2)
+            if (user != null && user.StaffType == 0)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -96,36 +99,35 @@ namespace IrisMed.Views
                 return NotFound();
             }
 
-            var inventory = await _context.Inventory.FindAsync(id);
-            if (inventory == null)
+            var contactUs = await _context.Queries.FindAsync(id);
+            if (contactUs == null)
             {
                 return NotFound();
             }
-            return View(inventory);
+            return View(contactUs);
         }
 
-        // POST: Inventories/Edit/5
+        // POST: ContactUs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Inventory inventory)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Content,Response")] ContactUs contactUs)
         {
-            if (id != inventory.Id)
+            if (id != contactUs.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+           
                 try
                 {
-                    _context.Update(inventory);
+                    _context.Update(contactUs);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!InventoryExists(inventory.Id))
+                    if (!ContactUsExists(contactUs.Id))
                     {
                         return NotFound();
                     }
@@ -135,48 +137,42 @@ namespace IrisMed.Views
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(inventory);
+            
+            return View(contactUs);
         }
 
-        // GET: Inventories/Delete/5
+        // GET: ContactUs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (user != null && user.StaffType < 2)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-
             if (id == null)
             {
                 return NotFound();
             }
 
-            var inventory = await _context.Inventory
+            var contactUs = await _context.Queries
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (inventory == null)
+            if (contactUs == null)
             {
                 return NotFound();
             }
 
-            return View(inventory);
+            return View(contactUs);
         }
 
-        // POST: Inventories/Delete/5
+        // POST: ContactUs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var inventory = await _context.Inventory.FindAsync(id);
-            _context.Inventory.Remove(inventory);
+            var contactUs = await _context.Queries.FindAsync(id);
+            _context.Queries.Remove(contactUs);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool InventoryExists(int id)
+        private bool ContactUsExists(int id)
         {
-            return _context.Inventory.Any(e => e.Id == id);
+            return _context.Queries.Any(e => e.Id == id);
         }
     }
 }

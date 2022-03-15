@@ -1,0 +1,52 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:StaffBoardContext"
+    },
+    "mssql3": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:LogsContext"
+    },
+    "mssql4": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:CareersContext"
+    },
+    "mssql5": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:IrisMedContextConnection"
+    },
+    "mssql6": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:InventoryContext"
+    },
+    "mssql7": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:AppointmentsContext"
+    },
+    "mssql8": {
+      "ignored": "true",
+      "suggestion": "true",
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:DataShiftContext"
+    },
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/irismeddbserver/databases/IrisMed_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    }
+  }
+}

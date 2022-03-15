@@ -20,13 +20,13 @@ namespace IrisMed.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IrisUser> _userManager;
         private readonly SignInManager<IrisUser> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
-        private readonly LogsContext _logsContext;
+        private readonly ApplicationDbContext _logsContext;
 
         public DeletePersonalDataModel(
             UserManager<IrisUser> userManager,
             SignInManager<IrisUser> signInManager,
             ILogger<DeletePersonalDataModel> logger,
-            LogsContext logsContext)
+            ApplicationDbContext logsContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

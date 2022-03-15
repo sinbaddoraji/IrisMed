@@ -14,9 +14,9 @@ namespace IrisMed.Controllers
 {
     public class PatientsController : Controller
     {
-        private readonly AppointmentsContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public PatientsController(AppointmentsContext context)
+        public PatientsController(ApplicationDbContext context)
         {
             _context = context;
         }

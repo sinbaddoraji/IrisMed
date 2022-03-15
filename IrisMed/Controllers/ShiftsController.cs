@@ -17,16 +17,13 @@ namespace IrisMed.Controllers
 {
     public class ShiftsController : Controller
     {
-        private readonly DataShiftContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
-        private readonly LogsContext _logsContext;
 
-        public ShiftsController(DataShiftContext context, UserManager<IrisUser> userManager
-            , LogsContext logsContext)
+        public ShiftsController(ApplicationDbContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _logsContext = logsContext;
         }
 
         // GET: Shifts
@@ -71,7 +68,6 @@ namespace IrisMed.Controllers
             {
                 shift.StaffName = shift.StaffName.Split('@')[0];
                 _context.Add(shift);
-                await _context.SaveChangesAsync();
 
                 var log = new Logs()
                 {
@@ -79,8 +75,8 @@ namespace IrisMed.Controllers
                     Action = "submitted a timesheet for shift",
                     Timestamp = DateTime.Now.ToString()
                 };
-                await _logsContext.AddAsync(log);
-                await _logsContext.SaveChangesAsync();
+                await _context.AddAsync(log);
+                await _context.SaveChangesAsync();
 
 
                 return RedirectToAction(nameof(Index));

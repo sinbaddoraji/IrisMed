@@ -15,10 +15,10 @@ namespace IrisMed.Controllers
 {
     public class LogsController : Controller
     {
-        private readonly LogsContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
 
-        public LogsController(LogsContext context, UserManager<IrisUser> userManager)
+        public LogsController(ApplicationDbContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
             _userManager = userManager;

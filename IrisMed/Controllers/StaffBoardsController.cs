@@ -15,16 +15,13 @@ namespace IrisMed.Controllers
 {
     public class StaffBoardsController : Controller
     {
-        private readonly StaffBoardContext _context;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
-        private readonly LogsContext _logsContext;
 
-        public StaffBoardsController(StaffBoardContext context, UserManager<IrisUser> userManager
-            , LogsContext logsContext)
+        public StaffBoardsController(ApplicationDbContext context, UserManager<IrisUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _logsContext = logsContext;
         }
 
         // GET: StaffBoards
@@ -90,7 +87,6 @@ namespace IrisMed.Controllers
             {
                 staffBoard.StaffName = staffBoard.StaffName.Split('@')[0];
                 _context.Add(staffBoard);
-                await _context.SaveChangesAsync();
 
                 var log = new Logs()
                 {
@@ -98,8 +94,8 @@ namespace IrisMed.Controllers
                     Action = "Posted a message to the staff board",
                     Timestamp = DateTime.Now.ToString()
                 };
-                await _logsContext.AddAsync(log);
-                await _logsContext.SaveChangesAsync();
+                await _context.AddAsync(log);
+                await _context.SaveChangesAsync();
 
 
                 return RedirectToAction(nameof(Index));
