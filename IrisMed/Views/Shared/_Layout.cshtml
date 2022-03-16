@@ -1,7 +1,9 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using IrisMed.Data
+@using Microsoft.AspNetCore.Identity
 @using IrisMed.Areas.Identity.Data;
 @inject SignInManager<IrisUser> SignInManager
 @inject UserManager<IrisUser> UserManager
+@inject ApplicationDbContext _context;
 
 <!DOCTYPE html>
 <html lang="en">
@@ -33,24 +35,38 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="ContactUs" asp-action="Index">Contact Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Inventories" asp-action="Index">Inventory</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="" asp-controller="ContactUs" asp-action="Index">Queries</a>
+                            </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Shifts" asp-action="Index">Shifts</a>
-                        </li>
+                            @if(_context.Users.Where(x => x.Email == User.Identity.Name && x.StaffType > 0).Any())
+                            {
+                                 <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Inventories" asp-action="Index">Inventory</a>
+                                </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="StaffBoards" asp-action="Index">Staff Board</a>
-                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="Shifts" asp-action="Index">Shifts</a>
+                                </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Logs" asp-action="Index">Staff Logs</a>
-                        </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-light" asp-area="" asp-controller="StaffBoards" asp-action="Index">Staff Board</a>
+                                </li>
+
+                                @if (_context.Users.Where(x => x.Email == User.Identity.Name && x.StaffType > 1).Any())
+                                {
+
+                                    <li class="nav-item">
+                                        <a class="nav-link text-light" asp-area="" asp-controller="Logs" asp-action="Index">Staff Logs</a>
+                                    </li>
+                                }
+                            }
+
+                        }
+                        
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
