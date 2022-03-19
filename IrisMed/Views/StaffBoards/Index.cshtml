@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-}
+
 @using Microsoft.AspNetCore.Identity
 @using IrisMed.Areas.Identity.Data;
 @inject SignInManager<IrisUser> SignInManager
@@ -13,7 +13,7 @@
 <h1>Staff Board</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Post to staff board</a>
 </p>
 <table class="table">
     <thead>

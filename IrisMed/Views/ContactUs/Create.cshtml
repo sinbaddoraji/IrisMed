@@ -5,12 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
 
-<h4>ContactUs</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    <div class="form_sect">
+        <h1 style="color:white">Submit New Query</h1>
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -18,17 +15,39 @@
                 <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
-    </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+        <div align="left">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    body {
+      background-image: url("/Images/1.jpg");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+}
+
+.form_sect {
+  padding: 50px;
+  text-align: center;
+  background-color:  rgba(13, 13, 13, 0.7);
+  color: white;
+  margin-left:25%; 
+  width:50%
+}
+</style>
