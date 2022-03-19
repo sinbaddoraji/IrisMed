@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="1.6.0" />
+    <PackageReference Include="Microsoft.ML.FastTree" Version="1.6.0" />
+  </ItemGroup>
+  <ItemGroup Label="HealthCheck">
+    <None Include="HealthCheck.consumption.cs">
+      <DependentUpon>HealthCheck.mbconfig</DependentUpon>
+    </None>
+    <None Include="HealthCheck.training.cs">
+      <DependentUpon>HealthCheck.mbconfig</DependentUpon>
+    </None>
+    <None Include="HealthCheck.zip">
+      <DependentUpon>HealthCheck.mbconfig</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

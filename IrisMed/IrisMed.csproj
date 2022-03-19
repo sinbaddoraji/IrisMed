@@ -70,4 +70,9 @@
     <None Include="Views\Home\Checkup.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HealthCheck_ConsoleApp\HealthCheck_ConsoleApp.csproj" />
+    <ProjectReference Include="..\HealthSelfCheck\HealthSelfCheck.csproj" />
+  </ItemGroup>
+
 </Project>

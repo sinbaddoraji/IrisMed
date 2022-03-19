@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@model IrisMed.Models.SelfCheck
+
+@{
+    ViewData["Title"] = "Results";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <p>
+            If you have @Html.DisplayTextFor(x => x.Symptoms)
+        </p>
+        <p>
+            You may be dealing with: @Html.DisplayTextFor(x => x.Illness)
+        </p>
+
+        <p>
+            @Html.DisplayTextFor(x => x.Description)
+        </p>
+
+        <p>
+            Take the following precautions:
+            
+            @Html.DisplayTextFor(x => x.Precaution)
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

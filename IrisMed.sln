@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IrisMed", "IrisMed\IrisMed.csproj", "{D609BF08-221F-418C-9C4E-DCFAF9BEAF2B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthSelfCheck", "HealthSelfCheck\HealthSelfCheck.csproj", "{1B967027-A3E2-49A5-83F0-34F10AA65DA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HealthCheck_ConsoleApp", "HealthCheck_ConsoleApp\HealthCheck_ConsoleApp.csproj", "{B2CA3375-059C-464F-A9C6-4BAABDF4AE1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D609BF08-221F-418C-9C4E-DCFAF9BEAF2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D609BF08-221F-418C-9C4E-DCFAF9BEAF2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D609BF08-221F-418C-9C4E-DCFAF9BEAF2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B967027-A3E2-49A5-83F0-34F10AA65DA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B967027-A3E2-49A5-83F0-34F10AA65DA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B967027-A3E2-49A5-83F0-34F10AA65DA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B967027-A3E2-49A5-83F0-34F10AA65DA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2CA3375-059C-464F-A9C6-4BAABDF4AE1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2CA3375-059C-464F-A9C6-4BAABDF4AE1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2CA3375-059C-464F-A9C6-4BAABDF4AE1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2CA3375-059C-464F-A9C6-4BAABDF4AE1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
