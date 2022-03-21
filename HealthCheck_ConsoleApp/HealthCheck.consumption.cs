@@ -102,6 +102,38 @@ namespace HealthCheck_ConsoleApp
             return predEngine.Predict(input);
         }
 
+        public static string[] SecondPrediction(string[] input, string[] dataset)
+        {
+            List<int> output = new List<int>();
+            List<int> output2 = new List<int>();
+            foreach (var item in dataset)
+            {
+                int o = 0;
+                foreach(var symp in input)
+                {
+                    if (item.Contains(symp))
+                        o++;
+                }
+                output.Add(o);
+                output2.Add(o);
+            }
+            int firstIndex;
+
+            firstIndex = output.IndexOf(output.Max());
+            string first = dataset[firstIndex].Split(',')[0];
+            output.RemoveAt(firstIndex);
+
+            firstIndex = output.IndexOf(output.Max());
+            string second = dataset[firstIndex].Split(',')[0];
+            output.RemoveAt(firstIndex);
+
+            firstIndex = output.IndexOf(output.Max());
+            string third = dataset[firstIndex].Split(',')[0];
+            output.RemoveAt(firstIndex);
+
+
+            return new[] {first.Trim(), second.Trim(), third.Trim() }.Distinct().ToArray();
+        }
 
         private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
         {

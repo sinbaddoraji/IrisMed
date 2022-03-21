@@ -9,15 +9,17 @@ namespace IrisMed.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static SelfCheck _selfCheck;
+        private static SelfCheck[] _selfCheck;
         private string[] _precautions;
         private string[] _descriptions;
+        private string[] _dataset;
 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _precautions = System.IO.File.ReadAllLines("symptom_precaution.csv");
             _descriptions = System.IO.File.ReadAllLines("symptom_Description.csv");
+            _dataset = System.IO.File.ReadAllLines("dataset.csv");
         }
 
         public IActionResult Index()
@@ -55,46 +57,37 @@ namespace IrisMed.Controllers
         public IActionResult SelfCheck([Bind("Symptoms")] SelfCheck selfCheck)
         {
             string[] col = new string[17];
-            var cStr = selfCheck.Symptoms.Split(",");
+            var cStr = selfCheck.Symptoms.Replace(" ","").Trim(',').Split(",");
             for (int i = 0; i < col.Length; i++)
             {
                 if (i < cStr.Length)
-                    col[i] = cStr[i];
+                    col[i] = cStr[i].Replace(" ","_");
                 else
                     col[i] = "";
             }
-            
-            HealthCheck.ModelInput input = new HealthCheck.ModelInput()
-            {
-                Col1 = col[0],
-                Col2 = col[1],
-                Col3 = col[2],
-                Col4 = col[3],
-                Col5 = col[4],
-                Col6 = col[5],
-                Col7 = col[6],
-                Col8 = col[7],
-                Col9 = col[8],
-                Col10 = col[9],
-                Col11 = col[10],
-                Col12 = col[11],
-                Col13 = col[12],
-                Col14 = col[13],
-                Col15 = col[14],
-                Col16 = col[15],
-                Col17 = col[16],
-            };
+            var result = HealthCheck.SecondPrediction(cStr, _dataset);
 
-            var predictionResult = HealthCheck.Predict(input).Prediction;
             //var p = HealthCheck.MultiPredict(input);
 
-            var description = _descriptions.Where(x => x.StartsWith(predictionResult,StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-            var precautions = _precautions.Where(x => x.StartsWith(predictionResult, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            _selfCheck = new SelfCheck[result.Length];
 
-            selfCheck.Symptoms = selfCheck.Symptoms.ToLower();
-            selfCheck.Illness = predictionResult; selfCheck.Description = description;
-            selfCheck.Precaution = precautions.Replace(predictionResult + ",","").Replace(",",", ");
-            _selfCheck = selfCheck;
+            if (result[0] != "")
+            {
+                for (int i = 0; i < result.Length; i++)
+                {
+                    var predictionResult = result[i];
+
+                    var description = _descriptions.Where(x => x.StartsWith(predictionResult, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                    var precautions = _precautions.Where(x => x.StartsWith(predictionResult, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+                    _selfCheck[i] = new SelfCheck();
+                    _selfCheck[i].Symptoms = selfCheck.Symptoms.ToLower();
+                    _selfCheck[i].Illness = predictionResult; _selfCheck[i].Description = description;
+                    _selfCheck[i].Precaution = precautions.Replace(predictionResult + ",", "").Replace(",", ", ");
+                }
+            }
+            
+
 
             return RedirectToAction(nameof(Results));
         }

@@ -4,31 +4,50 @@
 @{
 }
 
-@model IrisMed.Models.SelfCheck
+@model IEnumerable<IrisMed.Models.SelfCheck>
 
 @{
     ViewData["Title"] = "Results";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
+    var model = Model.ToArray();
+    bool empty = model[0] == null;
+
 }
 
 <div class="form_sect">
+
+    @if(empty)
+    {
+        <h3> Sorry, i am unable to diagnose what you have</h3>
+    }
+    else
+    {
         <h3>
-            If you have @Html.DisplayTextFor(x => x.Symptoms)
+            If you have 
+        @foreach (var item in Model)
+        {
+            @Html.DisplayTextFor(x => item.Symptoms)
+            break;
+        }
+
         </h3>
+  @foreach (var item in Model) {
         <p>
-            You may be dealing with: <b style="color:blue;">@Html.DisplayTextFor(x => x.Illness)</b>
+            You may be dealing with: <b style="color:blue;">@Html.DisplayTextFor(x => item.Illness)</b>
         </p>
 
         <p>
-            @Html.DisplayTextFor(x => x.Description)
+            @Html.DisplayTextFor(x => item.Description)
         </p>
 
         <p>Take the following precautions:</p>
         
         <p>
-            @Html.DisplayTextFor(x => x.Precaution)
+            @Html.DisplayTextFor(x => item.Precaution)
         </p>
+  }
+    }
+    
 </div>
 
 @section Scripts {
