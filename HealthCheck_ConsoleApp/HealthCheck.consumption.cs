@@ -102,6 +102,7 @@ namespace HealthCheck_ConsoleApp
             return predEngine.Predict(input);
         }
 
+
         private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
         {
             var mlContext = new MLContext();

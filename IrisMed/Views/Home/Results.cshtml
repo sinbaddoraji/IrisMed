@@ -9,30 +9,48 @@
 @{
     ViewData["Title"] = "Results";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <p>
+<div class="form_sect">
+        <h3>
             If you have @Html.DisplayTextFor(x => x.Symptoms)
-        </p>
+        </h3>
         <p>
-            You may be dealing with: @Html.DisplayTextFor(x => x.Illness)
+            You may be dealing with: <b style="color:blue;">@Html.DisplayTextFor(x => x.Illness)</b>
         </p>
 
         <p>
             @Html.DisplayTextFor(x => x.Description)
         </p>
 
+        <p>Take the following precautions:</p>
+        
         <p>
-            Take the following precautions:
-            
             @Html.DisplayTextFor(x => x.Precaution)
         </p>
-    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<style>
+    body {
+      background-image: url("/Images/7.jpg");
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+}
+
+.form_sect {
+  padding: 50px;
+  text-align: center;
+  background-color:  rgba(13, 13, 13, 0.7);
+  color: white;
+  margin-left:25%; 
+  width:50%
+}
+</style>

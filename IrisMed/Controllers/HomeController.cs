@@ -86,11 +86,14 @@ namespace IrisMed.Controllers
             };
 
             var predictionResult = HealthCheck.Predict(input).Prediction;
+            //var p = HealthCheck.MultiPredict(input);
+
             var description = _descriptions.Where(x => x.StartsWith(predictionResult,StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
             var precautions = _precautions.Where(x => x.StartsWith(predictionResult, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 
-
-            selfCheck.Illness = predictionResult; selfCheck.Precaution = precautions; selfCheck.Description = description;
+            selfCheck.Symptoms = selfCheck.Symptoms.ToLower();
+            selfCheck.Illness = predictionResult; selfCheck.Description = description;
+            selfCheck.Precaution = precautions.Replace(predictionResult + ",","").Replace(",",", ");
             _selfCheck = selfCheck;
 
             return RedirectToAction(nameof(Results));
