@@ -13,16 +13,11 @@ using IrisMed.Areas.Identity.Data;
 
 namespace IrisMed.Controllers
 {
-    public class PatientAppointment : Appointment
-    {
-        public double MedicalBill { get; set; }
-    }
-
     public class AppointmentsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IrisUser> _userManager;
-        private static Random _random = new Random();
+        private static readonly Random _random = new();
         private static string[] doctors;
 
         public AppointmentsController(UserManager<IrisUser> userManager,ApplicationDbContext context)
@@ -86,7 +81,7 @@ namespace IrisMed.Controllers
         }
 
         // GET: Patients/Edit/5
-        public async Task<IActionResult> DiagnoseAsync(string? id)
+        public async Task<IActionResult> DiagnoseAsync(string id)
         {
             if (id == null)
             {
@@ -172,6 +167,11 @@ namespace IrisMed.Controllers
 
         private bool PatientExists(string id, IrisUser user)
         {
+            if (id is null)
+            {
+                throw new ArgumentNullException(nameof(id));
+            }
+
             var patients = _context.Users.Where(x => x.StaffType == 0).ToList();
             string doctor = user.FullName;
 
@@ -373,12 +373,7 @@ namespace IrisMed.Controllers
                     }
                 }
 
-                var date = DateTime.Parse(appointments.AppointmentDate);
-
-                if (date >= DateTime.Now)
-                {
-                    return RedirectToAction(nameof(Index));
-                }
+                return RedirectToAction(nameof(Index));
             }
             return View(appointments);
         }

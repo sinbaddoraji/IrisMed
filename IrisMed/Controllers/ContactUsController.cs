@@ -78,7 +78,7 @@ namespace IrisMed.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception ex)
+            catch
             {
                 return View(contactUs);
             }
@@ -137,8 +137,6 @@ namespace IrisMed.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            
-            return View(contactUs);
         }
 
         // GET: ContactUs/Delete/5

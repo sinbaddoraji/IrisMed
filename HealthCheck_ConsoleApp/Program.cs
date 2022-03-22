@@ -8,12 +8,8 @@ namespace HealthCheck_ConsoleApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            var _dataset = System.IO.File.ReadAllLines("dataset.csv"); ;
-            var input = "headaches, sore_throat, restlessness, nasal_discharge, body_aches".Replace(" ", "").Split(',');
-            var output = HealthCheck.SecondPrediction(input, _dataset);
-            Console.ReadKey();
         }
     }
 }
