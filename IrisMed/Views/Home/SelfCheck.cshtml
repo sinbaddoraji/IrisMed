@@ -21,11 +21,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Symptoms" class="control-label"></label>
-                <input asp-for="Symptoms" id="symp" class="form-control" />
+                <input asp-for="Symptoms" id="symp" class="form-control" readonly />
                 <span asp-validation-for="Symptoms" class="text-danger"></span>
 
+                <br />
                 <div style="display: inline">
-                    <select id="content" class="form-control" style="width:200px">
+                    <select id="content" style="width:200px">
                         <option>abdominal_pain</option>
                         <option>abnormal_menstruation</option>
                         <option>acidity</option>
@@ -158,10 +159,11 @@
                         <option>yellowing_of_eyes</option>
                         <option>yellowish_skin</option>
                     </select>
-                    <button type="button" onclick="add()">+</button>
+                    <button type="button" class="btn btn-primary" onclick="add()">+</button>
+                    <button type="button" class="btn btn-primary" onclick="document.getElementById('symp').value = '';">Clear</button>
                 </div>
             </div>
-
+             
 
             <br />
             <div class="form-group">
@@ -195,8 +197,15 @@
 </style>
 
 <script>
-    function add(str)
+    function add()
     {
-       document.getElementById("symp").value += document.getElementById("content").value + " , ";
+        let a = document.getElementById("content").value;
+
+        if(!document.getElementById("symp").value.includes(a))
+        {
+            document.getElementById("symp").value += document.getElementById("content").value + " , ";
+        }
+       
     }
+
 </script>

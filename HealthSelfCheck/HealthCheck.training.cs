@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ML.Data;
-using Microsoft.ML.Trainers.FastTree;
 using Microsoft.ML.Trainers;
 using Microsoft.ML;
 
@@ -48,7 +47,8 @@ namespace HealthSelfCheck
                                     .Append(mlContext.Transforms.Text.FeaturizeText(@"col17", @"col17"))      
                                     .Append(mlContext.Transforms.Concatenate(@"Features", new []{@"col1",@"col2",@"col3",@"col4",@"col5",@"col6",@"col7",@"col8",@"col9",@"col10",@"col11",@"col12",@"col13",@"col14",@"col15",@"col16",@"col17"}))      
                                     .Append(mlContext.Transforms.Conversion.MapValueToKey(@"col0", @"col0"))      
-                                    .Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(binaryEstimator:mlContext.BinaryClassification.Trainers.FastForest(new FastForestBinaryTrainer.Options(){NumberOfTrees=4,FeatureFraction=1F,LabelColumnName=@"col0",FeatureColumnName=@"Features"}), labelColumnName: @"col0"))      
+                                    .Append(mlContext.Transforms.NormalizeMinMax(@"Features", @"Features"))      
+                                    .Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy(l1Regularization:6.97167602244396F,l2Regularization:0.763491616856404F,labelColumnName:@"col0",featureColumnName:@"Features"))      
                                     .Append(mlContext.Transforms.Conversion.MapKeyToValue(@"PredictedLabel", @"PredictedLabel"));
 
             return pipeline;
